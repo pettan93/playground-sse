@@ -1,0 +1,5 @@
+<mat-list>
+  <mat-list-item *ngFor="let dog of dogs">
+    {{dog.name}} ({{dog.born  | date: 'dd.MM.yyyy HH:mm'}}) - {{dog.dogBreed}}
+  </mat-list-item>
+</mat-list>
