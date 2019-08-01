@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DogService} from '../dog.service';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-dog-lister',
@@ -8,19 +9,19 @@ import {DogService} from '../dog.service';
 })
 export class DogListerComponent implements OnInit {
 
-  constructor(private dogService: DogService) {
+  constructor(private dogService: DogService,
+              private _snackBar: MatSnackBar) {
   }
 
   dogs: Dog[];
 
   ngOnInit() {
-
-    // load attribs
     this.dogService.dogs.subscribe((dogs) => {
         this.dogs = dogs;
       }
     );
   }
+
 
 
 }

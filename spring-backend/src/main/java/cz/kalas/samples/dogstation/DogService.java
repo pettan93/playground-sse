@@ -23,27 +23,23 @@ public class DogService {
         return dogRepository.findAll();
     }
 
+    public void deleteAll(){
+        dogRepository.deleteAll();
+    }
+
 
     public Dog waitForBirth() throws InterruptedException {
-
         Thread.sleep(new Random().nextInt(MAX_BIRTH_TIME - MIN_BIRTH_TIME + 1) + MIN_BIRTH_TIME);
-
         return createRandomDog();
     }
 
     public Dog createRandomDog() {
-
         var randomName = randomNameGenerator.next();
-
-        var random = new Dog(
+        return dogRepository.save(new Dog(
                 capitalizeFirstLetter(randomName.substring(0, randomName.indexOf("_"))),
                 Dog.DogBreed.values()[new Random().nextInt(Dog.DogBreed.values().length)],
                 LocalDateTime.now()
-        );
-
-        dogRepository.save(random);
-
-        return random;
+        ));
     }
 
 

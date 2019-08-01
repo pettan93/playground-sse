@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, interval, Observable} from 'rxjs';
 import {startWith, switchMap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
+import {MatSnackBar} from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class DogService {
 
   private dogObservable: BehaviorSubject<Dog[]> = new BehaviorSubject([]);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private _snackBar: MatSnackBar) {
     this.loadInitialData();
   }
 
@@ -22,10 +24,13 @@ export class DogService {
 
   loadInitialData() {
 
-    interval(15000)
+    interval(30000)
       .pipe(
         startWith(0),
-        switchMap(() => this.fetchDogs())
+        switchMap(() => {
+          this._snackBar.open('Periodical dog fetch.', null, {duration: 2000});
+          return this.performFetch();
+        })
       )
       .subscribe((dogs: Dog[]) => {
         this.dogObservable.next(dogs);
@@ -33,26 +38,43 @@ export class DogService {
   }
 
 
-  fetchDogs(): Observable<Dog[]> {
-    console.log('periodically fetching dogs..');
-    return this.http.get<Dog[]>(this.backendUrl + '/dogs');
+  performFetch(): Observable<Dog[]> {
+    return this.http.get<Dog[]>(this.backendUrl + '/dog/list');
+  }
+
+  performDelete(): Observable<void> {
+    return this.http.post<void>(this.backendUrl + '/dog/delete/all', null);
   }
 
 
-  // addAttribute(attribute: Attribute): Observable<Attribute> {
-  //
-  //   const obs = this.adminService.createAttribute(attribute);
-  //
-  //   obs.subscribe((data) => {
-  //     const array = this.attributesObservable.value;
-  //     array.push(data);
-  //
-  //     this.attributesObservable.next(array);
-  //   });
-  //
-  //
-  //   return obs;
-  // }
+  manualReload() {
+    this.performFetch()
+      .subscribe((dogs: Dog[]) => {
+        this.dogObservable.next(dogs);
+      });
+  }
+
+  deleteAll() {
+
+    const obs = this.performDelete()
+      .subscribe(() => {
+      this.dogObservable.next([]);
+    });
+
+  }
+
+  createInstantDog(): Observable<Dog> {
+    const obs = this.http.post<Dog>(this.backendUrl + '/dog/create/instant', null);
+
+    obs.subscribe((data) => {
+      const array = this.dogObservable.value;
+      array.push(data);
+
+      this.dogObservable.next(array);
+    });
+
+    return obs;
+  }
 
 
 }

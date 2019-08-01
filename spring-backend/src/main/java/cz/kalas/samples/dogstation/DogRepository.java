@@ -34,4 +34,8 @@ public class DogRepository {
         return dogBox;
     }
 
+    public void deleteAll(){
+        dogBox.removeAll(dogBox);
+    }
+
 }

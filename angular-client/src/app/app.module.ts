@@ -3,8 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { DogListerComponent } from './dog-lister/dog-lister.component';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import {MatListModule} from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule, MatCardModule, MatChipsModule, MatSnackBarModule, MatToolbarModule} from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -13,8 +18,16 @@ import {MatListModule} from '@angular/material/list';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
-    MatListModule
+    MatListModule,
+    MatIconModule,
+    MatCardModule,
+    MatSnackBarModule,
+    MatToolbarModule,
+    MatButtonModule,
+    FlexLayoutModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
