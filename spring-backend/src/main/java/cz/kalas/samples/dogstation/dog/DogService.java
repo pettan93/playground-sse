@@ -1,47 +1,60 @@
-package cz.kalas.samples.dogstation;
+package cz.kalas.samples.dogstation.dog;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.randname.RandomNameGenerator;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class DogService {
 
     private DogRepository dogRepository;
 
     private final RandomNameGenerator randomNameGenerator = new RandomNameGenerator(100);
 
-    private final Integer MIN_BIRTH_TIME = 2000;
-    private final Integer MAX_BIRTH_TIME = 10000;
+    private final Integer MIN_DELAY_TIME = 4000;
+    private final Integer MAX_DELAY_TIME = 5000;
 
     public List<Dog> getAllDogs() {
         return dogRepository.findAll();
     }
 
-    public void deleteAll(){
+    public void deleteAll() {
         dogRepository.deleteAll();
     }
 
+    @Async
+    public CompletableFuture<Dog> createDelayedDog(String name) throws InterruptedException {
+        Thread.sleep(
+                new Random().nextInt(MAX_DELAY_TIME - MIN_DELAY_TIME + 1) + MIN_DELAY_TIME);
 
-    public Dog waitForBirth() throws InterruptedException {
-        Thread.sleep(new Random().nextInt(MAX_BIRTH_TIME - MIN_BIRTH_TIME + 1) + MIN_BIRTH_TIME);
-        return createRandomDog();
+        return CompletableFuture.completedFuture(createRandomDog(name));
     }
 
     public Dog createRandomDog() {
-        var randomName = randomNameGenerator.next();
+        return createRandomDog(getRandomDogName());
+    }
+
+    public Dog createRandomDog(String name) {
         return dogRepository.save(new Dog(
-                capitalizeFirstLetter(randomName.substring(0, randomName.indexOf("_"))),
+                name,
                 Dog.DogBreed.values()[new Random().nextInt(Dog.DogBreed.values().length)],
                 LocalDateTime.now()
         ));
     }
 
+    public String getRandomDogName() {
+        var randomName = randomNameGenerator.next();
+        return capitalizeFirstLetter(randomName.substring(0, randomName.indexOf("_")));
+    }
 
     private String capitalizeFirstLetter(String original) {
         if (original == null || original.length() == 0) {

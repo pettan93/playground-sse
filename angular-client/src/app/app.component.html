@@ -2,12 +2,11 @@
 
   <mat-toolbar-row>
     <div fxFlex="50%">
-      <button mat-raised-button color="primary">
-        <b>Home</b>
-      </button>
+      <h3>Dog Station App</h3>
     </div>
     <div fxFlex="50%" class="button-row" fxLayoutAlign="end">
-      <button mat-raised-button (click)="instantDog()">New instant dog!</button>
+      <button mat-raised-button (click)="makeInstantDog()">New instant dog!</button>
+      <button mat-raised-button (click)="makeDelayedDog()">New delayed dog</button>
       <button mat-raised-button (click)="deleteAll()">Release them all!</button>
       <button mat-button (click)="refresh()">
         <mat-icon>refresh</mat-icon>
@@ -23,9 +22,6 @@
 </div>
 
 
-<!--<mat-chip-list>-->
-<!--  <mat-chip>{{dogs.length}} dogs around us!</mat-chip>-->
-<!--</mat-chip-list>-->
 
 
 

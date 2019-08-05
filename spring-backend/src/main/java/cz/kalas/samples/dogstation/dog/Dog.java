@@ -1,4 +1,4 @@
-package cz.kalas.samples.dogstation;
+package cz.kalas.samples.dogstation.dog;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

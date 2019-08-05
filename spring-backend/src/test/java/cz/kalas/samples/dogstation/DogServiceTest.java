@@ -1,5 +1,7 @@
 package cz.kalas.samples.dogstation;
 
+import cz.kalas.samples.dogstation.dog.DogRepository;
+import cz.kalas.samples.dogstation.dog.DogService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -30,8 +30,12 @@ export class AppComponent implements OnInit {
   }
 
 
-  instantDog() {
+  makeInstantDog() {
     this.dogService.createInstantDog();
+  }
+
+  makeDelayedDog() {
+    this.dogService.createDelayedDog();
   }
 
   deleteAll() {

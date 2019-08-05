@@ -1,4 +1,4 @@
-package cz.kalas.samples.dogstation;
+package cz.kalas.samples.dogstation.dog;
 
 import org.springframework.stereotype.Repository;
 

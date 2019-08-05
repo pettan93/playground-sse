@@ -13,7 +13,7 @@ export class DogListerComponent implements OnInit {
               private _snackBar: MatSnackBar) {
   }
 
-  dogs: Dog[];
+  dogs: Notification[];
 
   ngOnInit() {
     this.dogService.dogs.subscribe((dogs) => {

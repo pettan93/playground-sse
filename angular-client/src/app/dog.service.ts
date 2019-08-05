@@ -11,10 +11,10 @@ export class DogService {
 
   private backendUrl = 'http://localhost:8080';
 
-  private dogObservable: BehaviorSubject<Dog[]> = new BehaviorSubject([]);
+  private dogObservable: BehaviorSubject<Notification[]> = new BehaviorSubject([]);
 
   constructor(private http: HttpClient,
-              private _snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar) {
     this.loadInitialData();
   }
 
@@ -22,40 +22,38 @@ export class DogService {
     return this.dogObservable.asObservable();
   }
 
-  loadInitialData() {
-
+  private loadInitialData() {
     interval(30000)
       .pipe(
         startWith(0),
         switchMap(() => {
-          this._snackBar.open('Periodical dog fetch.', null, {duration: 2000});
+          this.snackBar.open('Periodical dog fetch.', null, {duration: 2000});
           return this.performFetch();
         })
       )
-      .subscribe((dogs: Dog[]) => {
+      .subscribe((dogs: Notification[]) => {
         this.dogObservable.next(dogs);
       });
   }
 
 
-  performFetch(): Observable<Dog[]> {
-    return this.http.get<Dog[]>(this.backendUrl + '/dog/list');
+  private performFetch(): Observable<Notification[]> {
+    return this.http.get<Notification[]>(this.backendUrl + '/dog/list');
   }
 
-  performDelete(): Observable<void> {
+  private performDelete(): Observable<void> {
     return this.http.post<void>(this.backendUrl + '/dog/delete/all', null);
   }
 
 
   manualReload() {
     this.performFetch()
-      .subscribe((dogs: Dog[]) => {
+      .subscribe((dogs: Notification[]) => {
         this.dogObservable.next(dogs);
       });
   }
 
   deleteAll() {
-
     const obs = this.performDelete()
       .subscribe(() => {
       this.dogObservable.next([]);
@@ -63,8 +61,8 @@ export class DogService {
 
   }
 
-  createInstantDog(): Observable<Dog> {
-    const obs = this.http.post<Dog>(this.backendUrl + '/dog/create/instant', null);
+  createInstantDog(): Observable<Notification> {
+    const obs = this.http.post<Notification>(this.backendUrl + '/dog/create/instant', null);
 
     obs.subscribe((data) => {
       const array = this.dogObservable.value;
@@ -76,5 +74,23 @@ export class DogService {
     return obs;
   }
 
+  createDelayedDog(): Observable<Notification> {
+    const obs = this.http.post<Notification>(this.backendUrl + '/dog/create/delayed', null);
+
+    obs.subscribe((data) => {
+      this.snackBar.open(data.message, null, {duration: 2000});
+    });
+
+    return obs;
+  }
+
+
+  // connect(): void {
+  //   const source = new EventSource(this.backendUrl + '/dog/sse');
+  //   source.addEventListener('message', message => {
+  //     console.log(message);
+  //     // this.myData = JSON.parse(message.data);
+  //   });
+  // }
 
 }
