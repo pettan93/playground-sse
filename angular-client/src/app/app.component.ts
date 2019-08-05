@@ -10,7 +10,7 @@ import {DogService} from './dog.service';
 export class AppComponent implements OnInit {
 
   constructor(private dogService: DogService,
-              private _snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar) {
   }
 
 
@@ -21,12 +21,14 @@ export class AppComponent implements OnInit {
         this.dogsCount = dogs != null ? dogs.length : 0;
       }
     );
+
+    this.dogService.connectToNotification();
   }
 
 
   refresh() {
+    this.snackBar.open('Manual dogs reload!', null, {duration: 2000});
     this.dogService.manualReload();
-    this._snackBar.open('Manual dogs refresh!', null, {duration: 2000});
   }
 
 

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DogService} from '../dog.service';
 import {MatSnackBar} from '@angular/material';
+import {Dog} from '../Dog';
 
 @Component({
   selector: 'app-dog-lister',
@@ -13,7 +14,7 @@ export class DogListerComponent implements OnInit {
               private _snackBar: MatSnackBar) {
   }
 
-  dogs: Notification[];
+  dogs: Dog[];
 
   ngOnInit() {
     this.dogService.dogs.subscribe((dogs) => {
