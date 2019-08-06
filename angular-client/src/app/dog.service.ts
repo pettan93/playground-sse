@@ -16,6 +16,8 @@ export class DogService {
 
   private dogObservable: BehaviorSubject<Dog[]> = new BehaviorSubject([]);
 
+  private dogStationStatusObservable: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   constructor(private http: HttpClient,
               private snackBar: MatSnackBar) {
     this.loadInitialData();
@@ -25,10 +27,14 @@ export class DogService {
     return this.dogObservable.asObservable();
   }
 
+  get dogStationStatus() {
+    return this.dogStationStatusObservable.asObservable();
+  }
+
   private loadInitialData() {
     interval(15000)
       .pipe(
-        delay(8000),
+        startWith(0),
         switchMap(() => {
           this.snackBar.open('Periodical dog fetch.', null, {duration: 2000});
           return this.performFetch();
@@ -92,7 +98,7 @@ export class DogService {
    * SSE
    */
   connectToNotification(): void {
-    const source = new EventSource(this.backendUrl + '/dog/sse/subscribe');
+    const source = new EventSource(this.backendUrl + '/dog/notification/sse');
     source.addEventListener('message', message => {
       // console.log(message);
       const notification: DogNotification = JSON.parse(message.data);
@@ -101,6 +107,20 @@ export class DogService {
 
       if (notification.notifyType.valueOf() === NotifyType.TRIGGER.valueOf()) {
         this.manualReload();
+      }
+    });
+  }
+
+  connectToStatus(): void {
+    const source = new EventSource(this.backendUrl + '/dog/notification/stream-flux');
+    source.addEventListener('message', message => {
+
+      const notification: DogNotification = JSON.parse(message.data);
+
+      console.log(notification);
+
+      if (notification.notifyType.valueOf() === NotifyType.STATUS.valueOf()) {
+        this.dogStationStatusObservable.next((notification.message === 'true'));
       }
     });
   }

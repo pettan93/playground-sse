@@ -6,7 +6,7 @@
     </div>
     <div fxFlex="50%" class="button-row" fxLayoutAlign="end">
       <button mat-raised-button (click)="makeInstantDog()">New instant dog!</button>
-      <button mat-raised-button (click)="makeDelayedDog()">New delayed dog</button>
+      <button mat-raised-button [disabled]="dogStationStatus" (click)="makeDelayedDog()">New delayed dog</button>
       <button mat-raised-button (click)="deleteAll()">Release them all!</button>
       <button mat-button (click)="refresh()">
         <mat-icon>refresh</mat-icon>
@@ -15,6 +15,8 @@
   </mat-toolbar-row>
 
 </mat-toolbar>
+
+<mat-progress-bar *ngIf="dogStationStatus" mode="indeterminate"></mat-progress-bar>
 
 <div fxLayout="column" fxLayoutAlign="center center">
   <br>

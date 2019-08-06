@@ -1,6 +1,6 @@
 package cz.kalas.samples.dogstation.dog;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.randname.RandomNameGenerator;
 import org.springframework.scheduling.annotation.Async;
@@ -10,18 +10,24 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class DogService {
 
-    private DogRepository dogRepository;
+    private final DogRepository dogRepository;
 
     private final RandomNameGenerator randomNameGenerator = new RandomNameGenerator(100);
 
     private final Integer MIN_DELAY_TIME = 4000;
     private final Integer MAX_DELAY_TIME = 5000;
+
+    private final Lock lock = new ReentrantLock();
+    private Boolean delayedDogInProgress = false;
 
     public List<Dog> getAllDogs() {
         return dogRepository.findAll();
@@ -31,10 +37,26 @@ public class DogService {
         dogRepository.deleteAll();
     }
 
+    public Boolean isDogInProgress() {
+        return delayedDogInProgress;
+    }
+
     @Async
-    public CompletableFuture<Dog> createDelayedDog(String name) throws InterruptedException {
-        Thread.sleep(
-                new Random().nextInt(MAX_DELAY_TIME - MIN_DELAY_TIME + 1) + MIN_DELAY_TIME);
+    public CompletableFuture<Dog> createDelayedDog(String name) {
+
+        try {
+            lock.tryLock(MAX_DELAY_TIME, TimeUnit.MILLISECONDS);
+
+            delayedDogInProgress = true;
+            Thread.sleep(new Random().nextInt(MAX_DELAY_TIME - MIN_DELAY_TIME + 1) + MIN_DELAY_TIME);
+            delayedDogInProgress = false;
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            delayedDogInProgress = false;
+            lock.unlock();
+            return CompletableFuture.failedFuture(e);
+        }
 
         return CompletableFuture.completedFuture(createRandomDog(name));
     }

@@ -6,7 +6,7 @@ import { DogListerComponent } from './dog-lister/dog-lister.component';
 import { HttpClientModule} from '@angular/common/http';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule, MatCardModule, MatChipsModule, MatSnackBarModule, MatToolbarModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatChipsModule, MatProgressBarModule, MatSnackBarModule, MatToolbarModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -27,7 +27,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatToolbarModule,
     MatButtonModule,
     FlexLayoutModule,
-    MatChipsModule
+    MatChipsModule,
+    MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -13,8 +13,8 @@ export class AppComponent implements OnInit {
               private snackBar: MatSnackBar) {
   }
 
-
   dogsCount: number;
+  dogStationStatus = false;
 
   ngOnInit() {
     this.dogService.dogs.subscribe((dogs) => {
@@ -22,7 +22,13 @@ export class AppComponent implements OnInit {
       }
     );
 
+    this.dogService.dogStationStatus.subscribe((status) => {
+        this.dogStationStatus = status;
+      }
+    );
+
     this.dogService.connectToNotification();
+    this.dogService.connectToStatus();
   }
 
 
