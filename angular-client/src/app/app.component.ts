@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
 import {DogService} from './dog.service';
+import {DogStationState} from './DogStationState';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit {
   }
 
   dogsCount: number;
-  dogStationStatus = false;
+  dogStationStatusWorking = false;
+  dogStationSessionUptime: number;
 
   ngOnInit() {
     this.dogService.dogs.subscribe((dogs) => {
@@ -23,12 +25,18 @@ export class AppComponent implements OnInit {
     );
 
     this.dogService.dogStationStatus.subscribe((status) => {
-        this.dogStationStatus = status;
+        this.dogStationStatusWorking = (status.valueOf() === DogStationState.WORKING.valueOf());
       }
     );
 
-    this.dogService.connectToNotification();
-    this.dogService.connectToStatus();
+    this.dogService.dogStationSessionUptime.subscribe((uptime) => {
+        this.dogStationSessionUptime = uptime;
+      }
+    );
+
+    this.dogService.subscribeNotification();
+    this.dogService.subscribeStatus();
+    this.dogService.subscribeSessionUptime();
   }
 
 

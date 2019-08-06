@@ -2,11 +2,11 @@
 
   <mat-toolbar-row>
     <div fxFlex="50%">
-      <h3>Dog Station App</h3>
+      <h3>Dog Station App (session uptime {{dogStationSessionUptime}})</h3>
     </div>
     <div fxFlex="50%" class="button-row" fxLayoutAlign="end">
       <button mat-raised-button (click)="makeInstantDog()">New instant dog!</button>
-      <button mat-raised-button [disabled]="dogStationStatus" (click)="makeDelayedDog()">New delayed dog</button>
+      <button mat-raised-button [disabled]="dogStationStatusWorking" (click)="makeDelayedDog()">New delayed dog</button>
       <button mat-raised-button (click)="deleteAll()">Release them all!</button>
       <button mat-button (click)="refresh()">
         <mat-icon>refresh</mat-icon>
@@ -16,7 +16,7 @@
 
 </mat-toolbar>
 
-<mat-progress-bar *ngIf="dogStationStatus" mode="indeterminate"></mat-progress-bar>
+<mat-progress-bar *ngIf="dogStationStatusWorking" mode="indeterminate"></mat-progress-bar>
 
 <div fxLayout="column" fxLayoutAlign="center center">
   <br>

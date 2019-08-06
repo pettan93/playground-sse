@@ -1,8 +1,10 @@
 package cz.kalas.samples.dogstation.dog;
 
+import cz.kalas.samples.dogstation.events.StateChangeEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.randname.RandomNameGenerator;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,13 +22,15 @@ public class DogService {
 
     private final DogRepository dogRepository;
 
+    private final ApplicationEventPublisher publisher;
+
     private final RandomNameGenerator randomNameGenerator = new RandomNameGenerator(100);
 
     private final Integer MIN_DELAY_TIME = 4000;
     private final Integer MAX_DELAY_TIME = 5000;
 
     private final Lock lock = new ReentrantLock();
-    private Boolean delayedDogInProgress = false;
+
 
     public List<Dog> getAllDogs() {
         return dogRepository.findAll();
@@ -37,23 +40,24 @@ public class DogService {
         dogRepository.deleteAll();
     }
 
-    public Boolean isDogInProgress() {
-        return delayedDogInProgress;
-    }
-
     @Async
     public CompletableFuture<Dog> createDelayedDog(String name) {
 
+        lock.lock();
+        log.debug("locked");
         try {
-            lock.tryLock(MAX_DELAY_TIME, TimeUnit.MILLISECONDS);
+            publisher.publishEvent(new StateChangeEvent(this, DogStationState.WORKING));
 
-            delayedDogInProgress = true;
             Thread.sleep(new Random().nextInt(MAX_DELAY_TIME - MIN_DELAY_TIME + 1) + MIN_DELAY_TIME);
-            delayedDogInProgress = false;
+
+            publisher.publishEvent(new StateChangeEvent(this, DogStationState.IDLE));
+
+            log.debug("unlocked");
+            lock.unlock();
 
         } catch (InterruptedException e) {
             e.printStackTrace();
-            delayedDogInProgress = false;
+            publisher.publishEvent(new StateChangeEvent(this, DogStationState.IDLE));
             lock.unlock();
             return CompletableFuture.failedFuture(e);
         }

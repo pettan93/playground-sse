@@ -12,7 +12,6 @@ public class DogRepository {
 
     private static List<Dog> dogBox = new ArrayList<>();
 
-
     static {
         dogBox.addAll(
                 Arrays.asList(
@@ -28,7 +27,6 @@ public class DogRepository {
         dogBox.add(dog);
         return dog;
     }
-
 
     public List<Dog> findAll() {
         return dogBox;

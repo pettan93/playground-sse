@@ -1,8 +1,10 @@
 package cz.kalas.samples.dogstation.dog;
 
-import cz.kalas.samples.dogstation.sseNotify.Notification;
-import cz.kalas.samples.dogstation.sseNotify.NotifyType;
-import lombok.AllArgsConstructor;
+import cz.kalas.samples.dogstation.events.StateChangeEvent;
+import cz.kalas.samples.dogstation.events.StateChangeEventPublisher;
+import cz.kalas.samples.dogstation.notifications.Notification;
+import cz.kalas.samples.dogstation.notifications.NotifyType;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,18 +14,31 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.Flux;
 
+import javax.annotation.PostConstruct;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/dog")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class DogEndpoint {
 
     private final DogService dogService;
 
-    private List<SseEmitter> sseEmitters;
+    private List<SseEmitter> sseEmitters = new ArrayList<>();
+
+    private final StateChangeEventPublisher stateChangeEventPublisher;
+
+    private Flux<StateChangeEvent> flux;
+
+
+    @PostConstruct
+    public void init() {
+        flux = Flux.create(stateChangeEventPublisher).share();
+    }
+
 
     @GetMapping("/list")
     public List<Dog> getAll() {
@@ -44,10 +59,29 @@ public class DogEndpoint {
     }
 
     /**
-     * SSE
+     * SSE ------------------------------------------
      */
+
+    @GetMapping("/notification/sse")
+    public SseEmitter handleSse() {
+        SseEmitter emitter = new SseEmitter(60000L); // timeout 15s
+        emitter.onTimeout(() -> {
+            emitter.complete();
+            this.sseEmitters.remove(emitter);
+        });
+        try {
+            emitter.send(new Notification(
+                    "Subscribed to newborn notifications.",
+                    NotifyType.PLAIN_TEXT));
+        } catch (Exception ex) {
+            emitter.completeWithError(ex);
+        }
+        sseEmitters.add(emitter);
+        return emitter;
+    }
+
     @PostMapping("/create/delayed")
-    public Notification delayedNewDog() throws InterruptedException {
+    public Notification delayedNewDog() {
         log.debug("Let's make delayed dog");
 
         var randomName = dogService.getRandomDogName();
@@ -85,27 +119,18 @@ public class DogEndpoint {
                 NotifyType.PLAIN_TEXT);
     }
 
-    @GetMapping("/notification/sse")
-    public SseEmitter handleSse() {
-        SseEmitter emitter = new SseEmitter(0L);
-        try {
-            emitter.send(new Notification(
-                    "Subscribed to newborn notifications.",
-                    NotifyType.PLAIN_TEXT));
-        } catch (Exception ex) {
-            emitter.completeWithError(ex);
-        }
-        sseEmitters.add(emitter);
-        return emitter;
-    }
 
     @GetMapping(path = "/notification/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Notification> streamFlux() {
+    public Flux<DogStationState> streamFlux() {
+        return flux.map(StateChangeEvent::getDogStationState);
+    }
+
+    @GetMapping(path = "/info/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Integer> streamFluxInterval() {
         return Flux.interval(Duration.ofSeconds(1))
-                .map(sequence ->
-                        new Notification(
-                                String.valueOf(dogService.isDogInProgress()),
-                                NotifyType.STATUS));
+                .map(l -> {
+                    return l.intValue() + 1;
+                });
     }
 
 }

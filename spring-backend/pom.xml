@@ -19,13 +19,27 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-rest</artifactId>
-        </dependency>
+        <!--        6/8/2019 Tomcat bug causing async exception with Flux-->
+        <!--        https://stackoverflow.com/questions/53605197/calling-asyncerror-is-not-valid-for-a-request-with-async-state-must-dispatc-->
+        <!--        https://github.com/spring-projects/spring-boot/issues/15057-->
+        <!--        Workaround: Switch from Tomcat to Jetty-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -33,7 +47,8 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-reactor-netty</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -43,23 +58,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.kohsuke</groupId>
             <artifactId>wordnet-random-name</artifactId>
             <version>1.3</version>
         </dependency>
-
-
     </dependencies>
 
 

@@ -6,6 +6,7 @@ import {MatSnackBar} from '@angular/material';
 import {Dog} from './Dog';
 import {DogNotification} from './DogNotification';
 import {NotifyType} from './NotifyType';
+import {DogStationState} from './DogStationState';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,9 @@ export class DogService {
 
   private dogObservable: BehaviorSubject<Dog[]> = new BehaviorSubject([]);
 
-  private dogStationStatusObservable: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private dogStationStatusObservable: BehaviorSubject<DogStationState> = new BehaviorSubject(DogStationState.IDLE);
+
+  private dogStationSessionUptimeObservable: BehaviorSubject<number> = new BehaviorSubject(1);
 
   constructor(private http: HttpClient,
               private snackBar: MatSnackBar) {
@@ -31,8 +34,12 @@ export class DogService {
     return this.dogStationStatusObservable.asObservable();
   }
 
+  get dogStationSessionUptime() {
+    return this.dogStationSessionUptimeObservable.asObservable();
+  }
+
   private loadInitialData() {
-    interval(15000)
+    interval(150000)
       .pipe(
         startWith(0),
         switchMap(() => {
@@ -97,13 +104,14 @@ export class DogService {
   /**
    * SSE
    */
-  connectToNotification(): void {
+  subscribeNotification(): void {
     const source = new EventSource(this.backendUrl + '/dog/notification/sse');
     source.addEventListener('message', message => {
+
       // console.log(message);
+
       const notification: DogNotification = JSON.parse(message.data);
       this.snackBar.open(notification.message, null, {duration: 2000});
-      // console.log(notification);
 
       if (notification.notifyType.valueOf() === NotifyType.TRIGGER.valueOf()) {
         this.manualReload();
@@ -111,17 +119,25 @@ export class DogService {
     });
   }
 
-  connectToStatus(): void {
+
+  subscribeStatus(): void {
     const source = new EventSource(this.backendUrl + '/dog/notification/stream-flux');
     source.addEventListener('message', message => {
 
-      const notification: DogNotification = JSON.parse(message.data);
+      // console.log(message);
 
-      console.log(notification);
+      const dogStationState: DogStationState = JSON.parse(message.data);
+      this.dogStationStatusObservable.next(dogStationState);
+    });
+  }
 
-      if (notification.notifyType.valueOf() === NotifyType.STATUS.valueOf()) {
-        this.dogStationStatusObservable.next((notification.message === 'true'));
-      }
+  subscribeSessionUptime(): void {
+    const source = new EventSource(this.backendUrl + '/dog/info/stream-flux');
+    source.addEventListener('message', message => {
+
+      // console.log(message);
+
+      this.dogStationSessionUptimeObservable.next(parseInt(message.data, 0));
     });
   }
 

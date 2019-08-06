@@ -1,4 +1,4 @@
-package cz.kalas.samples.dogstation.sseNotify;
+package cz.kalas.samples.dogstation.notifications;
 
 import lombok.Data;
 
@@ -12,6 +12,10 @@ public class Notification {
     private final String message;
 
     private final NotifyType notifyType;
+
+    public Notification(String message) {
+        this(message, NotifyType.PLAIN_TEXT);
+    }
 
     public Notification(String message, NotifyType notifyType) {
         this.id = LocalDateTime.now().getNano();
