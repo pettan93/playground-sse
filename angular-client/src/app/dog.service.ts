@@ -135,7 +135,7 @@ export class DogService {
     const source = new EventSource(this.backendUrl + '/dog/info/stream-flux');
     source.addEventListener('message', message => {
 
-      // console.log(message);
+      console.log(message);
 
       this.dogStationSessionUptimeObservable.next(parseInt(message.data, 0));
     });

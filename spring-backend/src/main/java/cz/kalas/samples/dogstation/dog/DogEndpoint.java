@@ -129,6 +129,7 @@ public class DogEndpoint {
     public Flux<Integer> streamFluxInterval() {
         return Flux.interval(Duration.ofSeconds(1))
                 .map(l -> {
+                    log.debug("sse push " + l.intValue() + 1);
                     return l.intValue() + 1;
                 });
     }
