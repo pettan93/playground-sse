@@ -11,7 +11,4 @@ public class DogStationApplication {
                 .run(DogStationApplication.class, args);
     }
 
-
-
-
 }

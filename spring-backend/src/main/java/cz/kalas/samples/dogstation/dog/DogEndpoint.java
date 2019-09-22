@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.Flux;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/dog")
 @RequiredArgsConstructor
 @Slf4j
 public class DogEndpoint {
@@ -40,19 +38,25 @@ public class DogEndpoint {
     }
 
 
-    @GetMapping("/list")
+    @GetMapping("")
+    public String root() {
+        log.debug("App root!");
+        return "DogApp";
+    }
+
+    @GetMapping(value = "/dog/list")
     public List<Dog> getAll() {
         log.debug("Get them all");
         return dogService.getAllDogs();
     }
 
-    @PostMapping("/create/instant")
+    @PostMapping("/dog/create/instant")
     public Dog instantNewDog() {
         log.debug("Let's make instant dog");
         return dogService.createRandomDog();
     }
 
-    @PostMapping("/delete/all")
+    @PostMapping("/dog/delete/all")
     public void deleteAll() {
         log.debug("Delete them all");
         dogService.deleteAll();
@@ -62,7 +66,7 @@ public class DogEndpoint {
      * SSE ------------------------------------------
      */
 
-    @GetMapping("/notification/sse")
+    @GetMapping("/dog/notification/sse")
     public SseEmitter handleSse() {
         SseEmitter emitter = new SseEmitter(60000L); // timeout 15s
         emitter.onTimeout(() -> {
@@ -80,7 +84,7 @@ public class DogEndpoint {
         return emitter;
     }
 
-    @PostMapping("/create/delayed")
+    @PostMapping("/dog/create/delayed")
     public Notification delayedNewDog() {
         log.debug("Let's make delayed dog");
 
@@ -120,16 +124,17 @@ public class DogEndpoint {
     }
 
 
-    @GetMapping(path = "/notification/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(path = "/dog/notification/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<DogStationState> streamFlux() {
         return flux.map(StateChangeEvent::getDogStationState);
     }
 
-    @GetMapping(path = "/info/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(path = "/dog/info/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Integer> streamFluxInterval() {
+        log.debug("Flux subscribed!");
         return Flux.interval(Duration.ofSeconds(1))
                 .map(l -> {
-                    log.debug("sse push " + l.intValue() + 1);
+                    log.debug("Flux push " + l.intValue());
                     return l.intValue() + 1;
                 });
     }
