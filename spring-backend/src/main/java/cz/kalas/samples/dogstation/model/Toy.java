@@ -1,30 +1,24 @@
 package cz.kalas.samples.dogstation.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @Entity
 @NoArgsConstructor
-public class Dog {
+public class Toy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_dog")
+    @Column(name = "id_toy")
     private Integer id;
 
     private String name;
-
-    private DogBreed dogBreed;
-
-    private LocalDateTime born;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Toy> ownedToys;
 
 
 }
