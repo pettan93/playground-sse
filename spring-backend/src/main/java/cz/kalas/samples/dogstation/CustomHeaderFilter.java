@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
-@Slf4j
+//@Component
+//@Slf4j
 public class CustomHeaderFilter implements Filter {
 
     @Override
@@ -48,7 +48,7 @@ public class CustomHeaderFilter implements Filter {
 
         // print all response headers
         for (String headerName : response.getHeaderNames()) {
-            log.debug("response header [" + headerName + "] val [" + response.getHeader(headerName) + "]");
+//            log.debug("response header [" + headerName + "] val [" + response.getHeader(headerName) + "]");
         }
 
         chain.doFilter(request, response);
