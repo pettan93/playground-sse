@@ -1,7 +1,8 @@
-package cz.kalas.samples.dogstation;
+package cz.kalas.samples.dogstation.service;
 
-import cz.kalas.samples.dogstation.dog.DogRepository;
-import cz.kalas.samples.dogstation.dog.DogService;
+import cz.kalas.samples.dogstation.CustomHeaderFilter;
+import cz.kalas.samples.dogstation.repository.DogRepository;
+import cz.kalas.samples.dogstation.service.DogService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ public class DogServiceTest {
 
     @Autowired
     private ApplicationEventPublisher publisher;
+
     private DogService dogService = new DogService(new DogRepository(),publisher);
 
     @Test

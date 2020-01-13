@@ -1,4 +1,4 @@
-package cz.kalas.samples.dogstation.dog;
+package cz.kalas.samples.dogstation.model;
 
 import lombok.*;
 
@@ -8,11 +8,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Dog {
 
-    enum DogBreed {
-        BULLDOG,
-        POODLE,
-        BICHON
-    }
 
     private String name;
 

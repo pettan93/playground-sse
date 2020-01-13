@@ -1,4 +1,4 @@
-package cz.kalas.samples.dogstation.notifications;
+package cz.kalas.samples.dogstation.model.notifications;
 
 import lombok.Data;
 

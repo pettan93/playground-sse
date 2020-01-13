@@ -1,9 +1,12 @@
-package cz.kalas.samples.dogstation.dog;
+package cz.kalas.samples.dogstation.endpoint;
 
+import cz.kalas.samples.dogstation.service.DogService;
 import cz.kalas.samples.dogstation.events.StateChangeEvent;
 import cz.kalas.samples.dogstation.events.StateChangeEventPublisher;
-import cz.kalas.samples.dogstation.notifications.Notification;
-import cz.kalas.samples.dogstation.notifications.NotifyType;
+import cz.kalas.samples.dogstation.model.Dog;
+import cz.kalas.samples.dogstation.model.DogStationState;
+import cz.kalas.samples.dogstation.model.notifications.Notification;
+import cz.kalas.samples.dogstation.model.notifications.NotifyType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

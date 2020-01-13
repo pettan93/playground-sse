@@ -1,11 +1,12 @@
 package cz.kalas.samples.dogstation.events;
 
-import cz.kalas.samples.dogstation.dog.DogStationState;
+import cz.kalas.samples.dogstation.model.DogStationState;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
-@Data
+@Getter
 @EqualsAndHashCode(callSuper = true)
 public class StateChangeEvent extends ApplicationEvent {
 

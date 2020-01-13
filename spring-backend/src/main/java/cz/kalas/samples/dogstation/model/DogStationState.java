@@ -1,4 +1,4 @@
-package cz.kalas.samples.dogstation.dog;
+package cz.kalas.samples.dogstation.model;
 
 public enum DogStationState {
     IDLE,
