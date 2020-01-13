@@ -8,15 +8,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DogRepository {
+public interface BaseRepository<T> {
 
-//    public void saveAll(List<Dog> dogs);
+//    List<T> saveAll(List<T> var1);
 
-    public Dog save(Dog dog);
+    T save(T dog);
 
-    public List<Dog> findAll();
+    List<T> findAll();
 
-    public void deleteAll();
+    void deleteAll();
 
 }
 

@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @NoArgsConstructor
+@Builder
 public class Dog {
 
     @Id

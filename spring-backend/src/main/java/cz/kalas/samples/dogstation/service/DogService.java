@@ -4,8 +4,7 @@ import cz.kalas.samples.dogstation.events.StateChangeEvent;
 import cz.kalas.samples.dogstation.model.Dog;
 import cz.kalas.samples.dogstation.model.DogBreed;
 import cz.kalas.samples.dogstation.model.DogStationState;
-import cz.kalas.samples.dogstation.repository.DogRepository;
-import cz.kalas.samples.dogstation.repository.DogRepositoryJPA;
+import cz.kalas.samples.dogstation.repository.BaseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.randname.RandomNameGenerator;
@@ -13,7 +12,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -26,7 +24,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @Slf4j
 public class DogService {
 
-    private final DogRepository dogRepository;
+    private final BaseRepository<Dog> baseRepository;
 
     private final ApplicationEventPublisher publisher;
 
@@ -37,24 +35,12 @@ public class DogService {
 
     private final Lock lock = new ReentrantLock();
 
-    @PostConstruct
-    private void initDogs() {
-//        dogRepository.saveAll(
-//                Arrays.asList(
-//                        new Dog("Terry", DogBreed.BICHON, LocalDateTime.of(2015, 5, 1, 17, 50)),
-//                        new Dog("Bobby", DogBreed.POODLE, LocalDateTime.of(2011, 1, 9, 20, 50)),
-//                        new Dog("Rammstein", DogBreed.BULLDOG, LocalDateTime.of(2008, 1, 2, 16, 16))
-//                )
-//        );
-        dogRepository.save(new Dog(null,"Terry", DogBreed.BICHON, LocalDateTime.of(2015, 5, 1, 17, 50)));
-    }
-
     public List<Dog> getAllDogs() {
-        return dogRepository.findAll();
+        return baseRepository.findAll();
     }
 
     public void deleteAll() {
-        dogRepository.deleteAll();
+        baseRepository.deleteAll();
     }
 
     @Async
@@ -87,12 +73,13 @@ public class DogService {
     }
 
     public Dog createRandomDog(String name) {
-        return dogRepository.save(new Dog(
-                null,
-                name,
-                DogBreed.values()[new Random().nextInt(DogBreed.values().length)],
-                LocalDateTime.now()
-        ));
+        return baseRepository.save(
+                Dog.builder()
+                        .name(name)
+                        .born(LocalDateTime.now())
+                        .dogBreed(DogBreed.values()[new Random().nextInt(DogBreed.values().length)])
+                        .build()
+        );
     }
 
     public String getRandomDogName() {
