@@ -1,11 +1,11 @@
 package cz.kalas.samples.dogstation.service;
 
-import cz.kalas.samples.dogstation.CustomHeaderFilter;
 import cz.kalas.samples.dogstation.events.StateChangeEvent;
 import cz.kalas.samples.dogstation.model.Dog;
 import cz.kalas.samples.dogstation.model.DogBreed;
 import cz.kalas.samples.dogstation.model.DogStationState;
 import cz.kalas.samples.dogstation.repository.DogRepository;
+import cz.kalas.samples.dogstation.repository.DogRepositoryJPA;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.randname.RandomNameGenerator;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
@@ -40,13 +39,14 @@ public class DogService {
 
     @PostConstruct
     private void initDogs() {
-        dogRepository.saveAll(
-                Arrays.asList(
-                        new Dog("Terry", DogBreed.BICHON, LocalDateTime.of(2015, 5, 1, 17, 50)),
-                        new Dog("Bobby", DogBreed.POODLE, LocalDateTime.of(2011, 1, 9, 20, 50)),
-                        new Dog("Rammstein", DogBreed.BULLDOG, LocalDateTime.of(2008, 1, 2, 16, 16))
-                )
-        );
+//        dogRepository.saveAll(
+//                Arrays.asList(
+//                        new Dog("Terry", DogBreed.BICHON, LocalDateTime.of(2015, 5, 1, 17, 50)),
+//                        new Dog("Bobby", DogBreed.POODLE, LocalDateTime.of(2011, 1, 9, 20, 50)),
+//                        new Dog("Rammstein", DogBreed.BULLDOG, LocalDateTime.of(2008, 1, 2, 16, 16))
+//                )
+//        );
+        dogRepository.save(new Dog(null,"Terry", DogBreed.BICHON, LocalDateTime.of(2015, 5, 1, 17, 50)));
     }
 
     public List<Dog> getAllDogs() {
@@ -88,6 +88,7 @@ public class DogService {
 
     public Dog createRandomDog(String name) {
         return dogRepository.save(new Dog(
+                null,
                 name,
                 DogBreed.values()[new Random().nextInt(DogBreed.values().length)],
                 LocalDateTime.now()
