@@ -9,6 +9,7 @@ import cz.kalas.samples.dogstation.repository.PersonRepository;
 import cz.kalas.samples.dogstation.repository.ToysRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Component
@@ -43,7 +45,7 @@ public class DataInicializer {
 
     private List<Toy> toys;
 
-    private static Integer DUMMY_N = 10;
+    private static Integer DUMMY_N = 100;
 
     static class RandomNameGenerator {
 
@@ -124,6 +126,7 @@ public class DataInicializer {
             dogs.add(Dog.builder()
                     .name(randomNameGenerator.getRandom())
                     .dogBreed(DogBreed.values()[new Random().nextInt(DogBreed.values().length)])
+                    .born(LocalDateTime.now())
                     .build());
         }
         return dogs;

@@ -2,6 +2,7 @@ package cz.kalas.samples.dogstation.ut.service;
 
 import cz.kalas.samples.dogstation.model.Dog;
 import cz.kalas.samples.dogstation.model.Person;
+import cz.kalas.samples.dogstation.repository.DogRepository;
 import cz.kalas.samples.dogstation.repository.PersonRepository;
 import cz.kalas.samples.dogstation.service.PersonService;
 import org.junit.Assert;
@@ -24,11 +25,14 @@ public class PersonServiceTest {
     @Mock
     PersonRepository personRepository;
 
+    @Mock
+    DogRepository dogRepository;
+
     PersonService personService;
 
     @Before
     public void init() {
-        personService = new PersonService(personRepository);
+        personService = new PersonService(personRepository,dogRepository);
     }
 
     @Test

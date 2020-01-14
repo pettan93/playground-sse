@@ -1,6 +1,7 @@
 package cz.kalas.samples.dogstation.service;
 
 import cz.kalas.samples.dogstation.model.Person;
+import cz.kalas.samples.dogstation.repository.DogRepository;
 import cz.kalas.samples.dogstation.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +18,19 @@ public class PersonService {
 
     private final PersonRepository personRepository;
 
+    private final DogRepository dogRepository;
+
     public Person save(Person person) {
         return personRepository.save(person);
     }
 
     public Optional<Person> getPersonById(Integer id) {
         return personRepository.findById(id);
+    }
+
+    public List<Person> getAll(){
+
+        return personRepository.getAll();
     }
 
     public Optional<Person> getRandom() {

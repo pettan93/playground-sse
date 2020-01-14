@@ -14,5 +14,10 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
     @Query("SELECT p.id FROM Person p")
     List<Integer> getIds();
 
+    @Query("SELECT p FROM Person p" +
+            " JOIN FETCH p.ownedDogs d")
+    List<Person> getAll();
+
+
 }
 

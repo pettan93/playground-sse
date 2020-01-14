@@ -33,6 +33,13 @@ public class PersonEndpoint {
     private final PersonService personService;
 
 
+    @GetMapping(value = "/person/list")
+    public ResponseEntity<List<Person>> getAll() {
+        log.debug("Get all");
+
+        return ResponseEntity.ok(personService.getAll());
+    }
+
     @GetMapping(value = "/person/getRandom")
     public ResponseEntity<Person> getRandom() {
         log.debug("Get random");
@@ -42,6 +49,8 @@ public class PersonEndpoint {
         return randomPerson.isPresent() ?
                 ResponseEntity.of(randomPerson) : ResponseEntity.badRequest().build();
     }
+
+
 
 
 }
