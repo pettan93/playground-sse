@@ -1,30 +1,23 @@
 package cz.kalas.samples.dogstation.component;
 
-import cz.kalas.samples.dogstation.model.Dog;
-import cz.kalas.samples.dogstation.model.DogBreed;
-import cz.kalas.samples.dogstation.model.Person;
-import cz.kalas.samples.dogstation.model.Toy;
+import cz.kalas.samples.dogstation.model.entity.Dog;
+import cz.kalas.samples.dogstation.model.entity.DogBreed;
+import cz.kalas.samples.dogstation.model.entity.Person;
+import cz.kalas.samples.dogstation.model.entity.Toy;
 import cz.kalas.samples.dogstation.repository.DogRepository;
 import cz.kalas.samples.dogstation.repository.PersonRepository;
 import cz.kalas.samples.dogstation.repository.ToysRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.asm.Advice;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-import javax.persistence.criteria.CriteriaBuilder;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.*;
 
 @Component

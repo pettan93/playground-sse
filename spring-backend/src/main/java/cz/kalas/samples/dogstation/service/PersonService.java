@@ -1,6 +1,6 @@
 package cz.kalas.samples.dogstation.service;
 
-import cz.kalas.samples.dogstation.model.Person;
+import cz.kalas.samples.dogstation.model.entity.Person;
 import cz.kalas.samples.dogstation.repository.DogRepository;
 import cz.kalas.samples.dogstation.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class PersonService {
         return personRepository.findById(id);
     }
 
-    public List<Person> getAll(){
+    public List<Person> getAll() {
 
         return personRepository.getAll();
     }
@@ -44,12 +44,20 @@ public class PersonService {
 
         Random rand = new Random();
 
-        var randomDog = person.getOwnedDogs()
-                .get(rand.nextInt(person.getOwnedDogs().size()));
+        if(personHasSomeDogs(person)){
+            var randomDog = person.getOwnedDogs()
+                    .get(rand.nextInt(person.getOwnedDogs().size()));
 
-        person.getOwnedDogs().remove(randomDog);
+            person.getOwnedDogs().remove(randomDog);
+        }else {
+            log.info("No dog released!");
+        }
 
         return personRepository.save(person);
+    }
+
+    public Boolean personHasSomeDogs(Person person) {
+        return person.getOwnedDogs() != null && person.getOwnedDogs().size() > 0;
     }
 
 

@@ -1,7 +1,7 @@
 package cz.kalas.samples.dogstation.it.service;
 
-import cz.kalas.samples.dogstation.model.Dog;
-import cz.kalas.samples.dogstation.model.Person;
+import cz.kalas.samples.dogstation.model.entity.Dog;
+import cz.kalas.samples.dogstation.model.entity.Person;
 import cz.kalas.samples.dogstation.repository.PersonRepository;
 import cz.kalas.samples.dogstation.service.PersonService;
 import org.junit.Assert;

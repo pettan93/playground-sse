@@ -1,4 +1,4 @@
-package cz.kalas.samples.dogstation.model;
+package cz.kalas.samples.dogstation.model.entity;
 
 import lombok.*;
 

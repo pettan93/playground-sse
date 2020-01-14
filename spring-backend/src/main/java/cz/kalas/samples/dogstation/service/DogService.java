@@ -1,10 +1,9 @@
 package cz.kalas.samples.dogstation.service;
 
-import cz.kalas.samples.dogstation.component.DataInicializer;
 import cz.kalas.samples.dogstation.events.StateChangeEvent;
-import cz.kalas.samples.dogstation.model.Dog;
-import cz.kalas.samples.dogstation.model.DogBreed;
-import cz.kalas.samples.dogstation.model.DogStationState;
+import cz.kalas.samples.dogstation.model.entity.Dog;
+import cz.kalas.samples.dogstation.model.entity.DogBreed;
+import cz.kalas.samples.dogstation.model.entity.DogStationState;
 import cz.kalas.samples.dogstation.repository.DogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

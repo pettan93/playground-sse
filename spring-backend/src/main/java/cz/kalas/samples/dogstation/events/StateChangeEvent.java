@@ -1,7 +1,6 @@
 package cz.kalas.samples.dogstation.events;
 
-import cz.kalas.samples.dogstation.model.DogStationState;
-import lombok.Data;
+import cz.kalas.samples.dogstation.model.entity.DogStationState;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;

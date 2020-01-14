@@ -1,20 +1,10 @@
 package cz.kalas.samples.dogstation;
 
 
-import cz.kalas.samples.dogstation.model.Dog;
-import cz.kalas.samples.dogstation.model.DogBreed;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 //@Component
 //@Slf4j
