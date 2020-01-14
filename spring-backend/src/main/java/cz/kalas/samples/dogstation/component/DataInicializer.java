@@ -106,7 +106,7 @@ public class DataInicializer {
         for (Person person : persons) {
             person.setOwnedDogs(dogs);
         }
-        
+
         personRepository.saveAll(persons);
 
         log.info("DataInicializer - Done");

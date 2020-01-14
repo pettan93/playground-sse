@@ -1,5 +1,6 @@
 package cz.kalas.samples.dogstation.service;
 
+import cz.kalas.samples.dogstation.component.DataInicializer;
 import cz.kalas.samples.dogstation.events.StateChangeEvent;
 import cz.kalas.samples.dogstation.model.Dog;
 import cz.kalas.samples.dogstation.model.DogBreed;
@@ -25,6 +26,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class DogService {
 
     private final DogRepository baseRepository;
+
+    private final DataInicializer dataInicializer;
 
     private final ApplicationEventPublisher publisher;
 

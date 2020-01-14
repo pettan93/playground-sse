@@ -26,6 +26,8 @@ public class Person {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Dog> ownedDogs;
 
-
+    public Person(String name) {
+        this.name = name;
+    }
 }
 
