@@ -24,7 +24,7 @@ public class Dog {
 
     private LocalDateTime born;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     private List<Toy> ownedToys;
 
 
