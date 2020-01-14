@@ -28,7 +28,7 @@ public class PersonService {
     public Optional<Person> getRandom() {
         Random rand = new Random();
         List<Integer> ids = personRepository.getIds();
-        var randomId = rand.nextInt(ids.size());
+        var randomId = ids.get(rand.nextInt(ids.size()));
         return getPersonById(randomId);
     }
 
