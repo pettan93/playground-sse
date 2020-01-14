@@ -27,8 +27,6 @@ public class DogService {
 
     private final DogRepository baseRepository;
 
-    private final DataInicializer dataInicializer;
-
     private final ApplicationEventPublisher publisher;
 
     private final RandomNameGenerator randomNameGenerator = new RandomNameGenerator(100);

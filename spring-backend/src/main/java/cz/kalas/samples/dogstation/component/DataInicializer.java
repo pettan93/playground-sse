@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,6 +28,7 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@Profile("!test")
 public class DataInicializer {
 
     private final DogRepository dogRepository;

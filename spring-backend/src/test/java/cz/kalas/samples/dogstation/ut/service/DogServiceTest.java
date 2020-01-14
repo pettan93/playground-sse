@@ -1,4 +1,4 @@
-package cz.kalas.samples.dogstation.service;
+package cz.kalas.samples.dogstation.ut.service;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
