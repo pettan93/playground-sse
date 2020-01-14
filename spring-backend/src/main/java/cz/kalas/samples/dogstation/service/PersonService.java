@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -26,7 +27,8 @@ public class PersonService {
 
     public Optional<Person> getRandom() {
         Random rand = new Random();
-        var randomId = rand.nextInt((int) personRepository.count());
+        List<Integer> ids = personRepository.getIds();
+        var randomId = rand.nextInt(ids.size());
         return getPersonById(randomId);
     }
 
