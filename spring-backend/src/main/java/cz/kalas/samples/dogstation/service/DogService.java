@@ -4,7 +4,7 @@ import cz.kalas.samples.dogstation.events.StateChangeEvent;
 import cz.kalas.samples.dogstation.model.Dog;
 import cz.kalas.samples.dogstation.model.DogBreed;
 import cz.kalas.samples.dogstation.model.DogStationState;
-import cz.kalas.samples.dogstation.repository.BaseRepository;
+import cz.kalas.samples.dogstation.repository.DogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.randname.RandomNameGenerator;
@@ -24,7 +24,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @Slf4j
 public class DogService {
 
-    private final BaseRepository<Dog> baseRepository;
+    private final DogRepository baseRepository;
 
     private final ApplicationEventPublisher publisher;
 
