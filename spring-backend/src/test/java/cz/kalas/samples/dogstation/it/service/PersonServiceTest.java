@@ -1,6 +1,5 @@
 package cz.kalas.samples.dogstation.it.service;
 
-import cz.kalas.samples.dogstation.AppConfiguration;
 import cz.kalas.samples.dogstation.model.Dog;
 import cz.kalas.samples.dogstation.model.Person;
 import cz.kalas.samples.dogstation.repository.PersonRepository;
@@ -9,18 +8,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.mockito.Mockito.when;
 
 
 

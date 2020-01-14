@@ -43,7 +43,7 @@ public class DataInicializer {
 
     private List<Toy> toys;
 
-    private static Integer DUMMY_N = 1000;
+    private static Integer DUMMY_N = 10;
 
     static class RandomNameGenerator {
 
@@ -94,7 +94,7 @@ public class DataInicializer {
     public void appReady(ApplicationReadyEvent event) {
 
 
-        dogs = generateDogs(DUMMY_N);
+        dogs = generateDogs(DUMMY_N * 2);
 
         persons = generatePersons(DUMMY_N);
 
@@ -106,7 +106,10 @@ public class DataInicializer {
         }
 
         for (Person person : persons) {
-            person.setOwnedDogs(dogs);
+            person.setOwnedDogs(List.of(
+                    dogs.get(persons.indexOf(person) * 2),
+                    dogs.get((persons.indexOf(person) * 2) + 1)
+            ));
         }
 
         personRepository.saveAll(persons);

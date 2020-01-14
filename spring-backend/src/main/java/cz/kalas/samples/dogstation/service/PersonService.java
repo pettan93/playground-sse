@@ -24,6 +24,12 @@ public class PersonService {
         return personRepository.findById(id);
     }
 
+    public Optional<Person> getRandom() {
+        Random rand = new Random();
+        var randomId = rand.nextInt((int) personRepository.count());
+        return getPersonById(randomId);
+    }
+
     public Person releaseSomeDog(Person person) {
 
         Random rand = new Random();
