@@ -1,9 +1,6 @@
 package cz.kalas.samples.dogstation.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Builder
+@ToString
 public class Person {
 
     @Id
@@ -22,6 +20,7 @@ public class Person {
 
     private String name;
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Dog> ownedDogs;
 
