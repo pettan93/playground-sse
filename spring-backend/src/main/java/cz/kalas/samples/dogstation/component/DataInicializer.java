@@ -40,6 +40,8 @@ public class DataInicializer {
 
     private static Integer DUMMY_N = 100;
 
+    private static Integer NUMBER_OF_DOGS_PER_PERSON = 10;
+
     static class RandomNameGenerator {
 
         ClassPathResource file = new ClassPathResource("names.csv");
@@ -89,7 +91,8 @@ public class DataInicializer {
     public void appReady(ApplicationReadyEvent event) {
 
 
-        dogs = generateDogs(DUMMY_N * 2);
+        var y = NUMBER_OF_DOGS_PER_PERSON;
+        dogs = generateDogs(DUMMY_N * y);
 
         persons = generatePersons(DUMMY_N);
 
@@ -100,11 +103,26 @@ public class DataInicializer {
             );
         }
 
+
+        // Surjective function for assigning dogs to owners
+        // n = n-times more dogs than persons
+        // x - index of person in person array
+        // y = index of dog in dogs array for asigning to person x
+        // y = n.x + n
+
+
         for (Person person : persons) {
-            person.setOwnedDogs(List.of(
-                    dogs.get(persons.indexOf(person) * 2),
-                    dogs.get((persons.indexOf(person) * 2) + 1)
-            ));
+            for (int j = 0; j < (y - 1); j++) {
+
+                if (person.getOwnedDogs() == null) {
+                    person.setOwnedDogs(new ArrayList<>());
+                }
+
+                person.getOwnedDogs()
+                        .add(dogs.get((persons.indexOf(person) * y) + j));
+            }
+
+
         }
 
         personRepository.saveAll(persons);

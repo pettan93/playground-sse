@@ -18,8 +18,6 @@ import java.util.Random;
 @Slf4j
 public class PersonService {
 
-    private final static long DELAY_CONSTANT = 2000; // milisecs
-
     private final PersonRepository personRepository;
 
     private final DogRepository dogRepository;
@@ -48,7 +46,7 @@ public class PersonService {
     public Person releaseSomeDog(Person person) {
         log.debug("Lets release some dog for person " + person.toString());
 
-        AnotherCleverUtils.delay(DELAY_CONSTANT);
+        AnotherCleverUtils.delay(AnotherCleverUtils.DELAY_CONSTANT);
 
         Random rand = new Random();
 
@@ -61,7 +59,7 @@ public class PersonService {
             log.info("No dog released!");
         }
 
-        AnotherCleverUtils.delay(DELAY_CONSTANT);
+        AnotherCleverUtils.delay(AnotherCleverUtils.DELAY_CONSTANT);
 
         log.debug("OK, now lets save person " + person.toString());
         return personRepository.save(person);

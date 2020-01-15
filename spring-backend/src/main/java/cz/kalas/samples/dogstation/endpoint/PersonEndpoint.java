@@ -1,5 +1,6 @@
 package cz.kalas.samples.dogstation.endpoint;
 
+import cz.kalas.samples.dogstation.AnotherCleverUtils;
 import cz.kalas.samples.dogstation.model.dto.PersonDto;
 import cz.kalas.samples.dogstation.model.entity.Person;
 import cz.kalas.samples.dogstation.service.PersonService;
@@ -55,6 +56,10 @@ public class PersonEndpoint {
         var person = personService.getPersonById(id);
 
         if (person.isPresent()) {
+
+            AnotherCleverUtils.delay(AnotherCleverUtils.DELAY_CONSTANT);
+
+            log.debug("Requst - release some dog of exting user " + person.get());
 
             var result = personService.releaseSomeDog(person.get());
 
