@@ -1,5 +1,6 @@
 package cz.kalas.samples.dogstation.model.entity;
 
+import cz.kalas.samples.dogstation.model.PersonState;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,9 @@ public class Person {
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Dog> ownedDogs;
+
+    @Builder.Default
+    private PersonState personState = PersonState.IDLE;
 
     public Person(String name) {
         this.name = name;

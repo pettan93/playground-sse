@@ -1,6 +1,7 @@
 package cz.kalas.samples.dogstation.service;
 
 import cz.kalas.samples.dogstation.AnotherCleverUtils;
+import cz.kalas.samples.dogstation.model.PersonState;
 import cz.kalas.samples.dogstation.model.entity.Person;
 import cz.kalas.samples.dogstation.repository.DogRepository;
 import cz.kalas.samples.dogstation.repository.PersonRepository;
@@ -41,6 +42,7 @@ public class PersonService {
         var randomId = ids.get(rand.nextInt(ids.size()));
         return getPersonById(randomId);
     }
+
 
     @Transactional
     public Person releaseSomeDog(Person person) {
