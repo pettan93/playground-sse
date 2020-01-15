@@ -46,26 +46,26 @@ public class PersonServiceTest {
         verify(personRepository, times(1)).save(any(Person.class));
     }
 
-    @Test
-    public void releaseSomeDogTest() {
-
-        Person person = new Person("Petr");
-
-        Dog dog1 = new Dog("Bobby");
-        Dog dog2 = new Dog("Tim");
-
-        person.setOwnedDogs(new ArrayList<>(List.of(dog1, dog2)));
-
-        Person expectedPerson = new Person("Petr");
-        expectedPerson.setOwnedDogs(new ArrayList<>(List.of(dog1)));
-
-        when(personService.save(person)).thenReturn(expectedPerson);
-
-        var returnedPerson = personService.releaseSomeDog(person);
-
-        Assert.assertNotNull(returnedPerson);
-        Assert.assertEquals(expectedPerson.getOwnedDogs().size(),returnedPerson.getOwnedDogs().size());
-    }
+//    @Test
+//    public void releaseSomeDogTest() {
+//
+//        Person person = new Person("Petr");
+//
+//        Dog dog1 = new Dog("Bobby");
+//        Dog dog2 = new Dog("Tim");
+//
+//        person.setOwnedDogs(new ArrayList<>(List.of(dog1, dog2)));
+//
+//        Person expectedPerson = new Person("Petr");
+//        expectedPerson.setOwnedDogs(new ArrayList<>(List.of(dog1)));
+//
+//        when(personService.save(person)).thenReturn(expectedPerson);
+//
+//        var returnedPerson = personService.releaseSomeDog(person);
+//
+//        Assert.assertNotNull(returnedPerson);
+//        Assert.assertEquals(expectedPerson.getOwnedDogs().size(),returnedPerson.getOwnedDogs().size());
+//    }
 
 
 }

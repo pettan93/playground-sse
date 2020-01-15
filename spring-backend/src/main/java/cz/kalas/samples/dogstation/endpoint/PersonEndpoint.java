@@ -28,6 +28,16 @@ public class PersonEndpoint {
     private final PersonService personService;
 
 
+    @GetMapping(value = "/person/{id}")
+    public ResponseEntity<PersonDto> getById(@PathVariable Integer id) {
+        log.debug("Get person by Id");
+
+        var person = personService.getPersonById(id);
+
+        return person.map(p -> ResponseEntity.ok(toDtoFull(p)))
+                .orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+
     @GetMapping(value = "/person/list")
     public ResponseEntity<List<PersonDto>> getAll() {
         log.debug("Get all");
@@ -40,13 +50,13 @@ public class PersonEndpoint {
     }
 
     @GetMapping(value = "/person/getRandom")
-    public ResponseEntity<Person> getRandom() {
+    public ResponseEntity<PersonDto> getRandom() {
         log.debug("Get random");
 
         var randomPerson = personService.getRandom();
 
-        return randomPerson.isPresent() ?
-                ResponseEntity.of(randomPerson) : ResponseEntity.badRequest().build();
+        return randomPerson.map(person -> ResponseEntity.ok(toDtoFull(person)))
+                .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @GetMapping(value = "/person/{id}/releaseDog")
@@ -57,13 +67,15 @@ public class PersonEndpoint {
 
         if (person.isPresent()) {
 
-            AnotherCleverUtils.delay("Request - release some dog of exting user " + person.get());
+            log.debug("Request - release some dog of exting user " + person.get());
 
-            var result = personService.releaseSomeDog(person.get());
+            var result = personService.initDogReleasing(person.get());
 
-            AnotherCleverUtils.delay("Request - lets map and return result person " + person.get());
+            personService.releaseSomeDog(person.get());
 
-            return ResponseEntity.ok(toDtoFull(result));
+            log.debug("Request - Request processd lets map and return result person " + person.get());
+
+            return ResponseEntity.ok(toDto(result));
 
         }
 

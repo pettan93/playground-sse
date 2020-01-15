@@ -7,12 +7,14 @@ import cz.kalas.samples.dogstation.repository.DogRepository;
 import cz.kalas.samples.dogstation.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -43,9 +45,43 @@ public class PersonService {
         return getPersonById(randomId);
     }
 
+    public Person initDogReleasing(Person person) {
+
+        log.debug("Initialized dog releasing for person" + person.toString());
+
+        person.setPersonState(PersonState.IN_PROGRESS);
+
+        return person;
+    }
+
 
     @Transactional
-    public Person releaseSomeDog(Person person) {
+    @Async
+    public void releaseSomeDog(Person person) {
+
+        AnotherCleverUtils.delay("Started async job for person " + person.toString());
+
+        var futureResult = CompletableFuture.completedFuture(
+                proccessDogRelesing(person)
+        );
+
+
+        futureResult.thenAccept(p -> {
+
+            p.setPersonState(PersonState.IDLE);
+
+            AnotherCleverUtils.delay("Now lets save person " + person.toString());
+
+            personRepository.save(person);
+
+            AnotherCleverUtils.delay("Saved! Task Done " + person.toString());
+        });
+
+
+    }
+
+
+    private Person proccessDogRelesing(Person person) {
 
         AnotherCleverUtils.delay("Releasing some dog of person.." + person.toString());
 
@@ -60,14 +96,9 @@ public class PersonService {
             log.info("No dog released!");
         }
 
+        AnotherCleverUtils.delay("Dog Released! " + person.toString());
 
-        AnotherCleverUtils.delay("Released! now lets save person " + person.toString());
-
-        var saved = personRepository.save(person);
-
-        AnotherCleverUtils.delay("Saved! Lets return saved person " + person.toString());
-
-        return saved;
+        return person;
     }
 
 
