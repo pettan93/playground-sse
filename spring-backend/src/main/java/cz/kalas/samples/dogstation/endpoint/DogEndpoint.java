@@ -1,5 +1,10 @@
 package cz.kalas.samples.dogstation.endpoint;
 
+import cz.kalas.samples.dogstation.model.dto.DogDto;
+import cz.kalas.samples.dogstation.model.dto.PersonDto;
+import cz.kalas.samples.dogstation.model.dto.ToyDto;
+import cz.kalas.samples.dogstation.model.entity.Person;
+import cz.kalas.samples.dogstation.model.entity.Toy;
 import cz.kalas.samples.dogstation.service.DogService;
 import cz.kalas.samples.dogstation.events.StateChangeEvent;
 import cz.kalas.samples.dogstation.events.StateChangeEventPublisher;
@@ -9,6 +14,7 @@ import cz.kalas.samples.dogstation.model.notifications.Notification;
 import cz.kalas.samples.dogstation.model.notifications.NotifyType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class DogEndpoint {
+
 
     private final DogService dogService;
 
@@ -140,6 +147,15 @@ public class DogEndpoint {
                     log.debug("Flux push " + l.intValue());
                     return l.intValue() + 1;
                 });
+    }
+
+    public DogDto toDto(Dog dog) {
+
+        return null;
+    }
+
+    public ToyDto toyDto(Toy toy) {
+        return null;
     }
 
 }

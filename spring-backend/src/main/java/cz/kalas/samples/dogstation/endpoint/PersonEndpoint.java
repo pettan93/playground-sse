@@ -1,15 +1,23 @@
 package cz.kalas.samples.dogstation.endpoint;
 
+import cz.kalas.samples.dogstation.model.dto.PersonDto;
 import cz.kalas.samples.dogstation.model.entity.Person;
 import cz.kalas.samples.dogstation.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.TypeMap;
+import org.modelmapper.spi.DestinationSetter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,10 +28,14 @@ public class PersonEndpoint {
 
 
     @GetMapping(value = "/person/list")
-    public ResponseEntity<List<Person>> getAll() {
+    public ResponseEntity<List<PersonDto>> getAll() {
         log.debug("Get all");
 
-        return ResponseEntity.ok(personService.getAll());
+        return ResponseEntity.ok(
+                personService.getAll().stream()
+                        .map(this::toDto)
+                        .collect(Collectors.toList())
+        );
     }
 
     @GetMapping(value = "/person/getRandom")
@@ -37,7 +49,7 @@ public class PersonEndpoint {
     }
 
     @GetMapping(value = "/person/{id}/releaseDog")
-    public ResponseEntity<Person> releaseSomeDog(@PathVariable Integer id) {
+    public ResponseEntity<PersonDto> releaseSomeDog(@PathVariable Integer id) {
         log.debug("releaseSomeDog");
 
         var person = personService.getPersonById(id);
@@ -46,13 +58,23 @@ public class PersonEndpoint {
 
             var result = personService.releaseSomeDog(person.get());
 
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(toDto(result));
 
         }
 
         return ResponseEntity.badRequest().build();
     }
 
+
+    public PersonDto toDto(Person person) {
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        modelMapper.typeMap(Person.class, PersonDto.class)
+                .addMappings(mapper -> mapper.skip(PersonDto::setOwnedDogs));
+
+        return modelMapper.map(person, PersonDto.class);
+    }
 
 }
 
