@@ -45,7 +45,7 @@ public class PersonService {
     @Transactional
     public Person releaseSomeDog(Person person) {
 
-        AnotherCleverUtils.delay("Lets release some dog for person" + person.toString());
+        AnotherCleverUtils.delay("Releasing some dog of person.." + person.toString());
 
         Random rand = new Random();
 
