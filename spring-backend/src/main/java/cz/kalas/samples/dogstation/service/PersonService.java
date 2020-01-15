@@ -56,6 +56,7 @@ public class PersonService {
         return personRepository.save(person);
     }
 
+
     public Boolean personHasSomeDogs(Person person) {
         return person.getOwnedDogs() != null && person.getOwnedDogs().size() > 0;
     }

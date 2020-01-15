@@ -58,7 +58,7 @@ public class PersonEndpoint {
 
             var result = personService.releaseSomeDog(person.get());
 
-            return ResponseEntity.ok(toDto(result));
+            return ResponseEntity.ok(toDtoFull(result));
 
         }
 
@@ -75,6 +75,14 @@ public class PersonEndpoint {
 
         return modelMapper.map(person, PersonDto.class);
     }
+
+    public PersonDto toDtoFull(Person person) {
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(person, PersonDto.class);
+    }
+
 
 }
 
