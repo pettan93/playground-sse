@@ -44,9 +44,8 @@ public class PersonService {
 
     @Transactional
     public Person releaseSomeDog(Person person) {
-        log.debug("Lets release some dog for person " + person.toString());
 
-        AnotherCleverUtils.delay(AnotherCleverUtils.DELAY_CONSTANT);
+        AnotherCleverUtils.delay("Lets release some dog for person" + person.toString());
 
         Random rand = new Random();
 
@@ -59,10 +58,14 @@ public class PersonService {
             log.info("No dog released!");
         }
 
-        AnotherCleverUtils.delay(AnotherCleverUtils.DELAY_CONSTANT);
 
-        log.debug("OK, now lets save person " + person.toString());
-        return personRepository.save(person);
+        AnotherCleverUtils.delay("Released! now lets save person " + person.toString());
+
+        var saved = personRepository.save(person);
+
+        AnotherCleverUtils.delay("Saved! Lets return saved person " + person.toString());
+
+        return saved;
     }
 
 

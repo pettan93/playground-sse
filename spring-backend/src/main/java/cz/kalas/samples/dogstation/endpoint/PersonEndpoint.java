@@ -59,9 +59,12 @@ public class PersonEndpoint {
 
             AnotherCleverUtils.delay(AnotherCleverUtils.DELAY_CONSTANT);
 
-            log.debug("Requst - release some dog of exting user " + person.get());
+
+            AnotherCleverUtils.delay("Reqeust - release some dog of exting user " + person.get());
 
             var result = personService.releaseSomeDog(person.get());
+
+            AnotherCleverUtils.delay("Reqeust - lets map and return result person " + person.get());
 
             return ResponseEntity.ok(toDtoFull(result));
 
