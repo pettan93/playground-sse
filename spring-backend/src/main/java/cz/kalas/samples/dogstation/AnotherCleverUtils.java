@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AnotherCleverUtils {
 
 
-    public final static Boolean DELAY_ENABLED = true;
+    public final static Boolean DELAY_ENABLED = false;
     public final static long DELAY_CONSTANT = 5000; // milisecs
 
     public static void delay(long time) {

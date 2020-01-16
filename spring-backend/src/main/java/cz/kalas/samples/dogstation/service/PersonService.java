@@ -57,8 +57,9 @@ public class PersonService {
 
     @Transactional
     @Async
-    public void releaseSomeDog(Person person) {
+    public void releaseSomeDog(Integer id) {
 
+        var person = personRepository.findById(id).get();
         AnotherCleverUtils.delay("Started async job for person " + person.toString());
 
         var futureResult = CompletableFuture.completedFuture(

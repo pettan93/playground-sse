@@ -71,11 +71,13 @@ public class PersonEndpoint {
 
             var result = personService.initDogReleasing(person.get());
 
-            personService.releaseSomeDog(person.get());
+            AnotherCleverUtils.delay("Wait before starting async request");
+            personService.releaseSomeDog(id);
 
             log.debug("Request - Request processd lets map and return result person " + person.get());
 
             return ResponseEntity.ok(toDto(result));
+//            return ResponseEntity.ok().build();
 
         }
 
