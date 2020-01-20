@@ -22,7 +22,7 @@ public class Person {
     private String name;
 
     @ToString.Exclude
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.REFRESH})
     private List<Dog> ownedDogs;
 
     @Builder.Default

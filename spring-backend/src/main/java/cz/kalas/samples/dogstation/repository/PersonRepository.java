@@ -14,7 +14,7 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
     List<Integer> getIds();
 
     @Query("SELECT p FROM Person p" +
-            " JOIN FETCH p.ownedDogs d")
+            " LEFT JOIN FETCH p.ownedDogs d")
     List<Person> getAll();
 
 

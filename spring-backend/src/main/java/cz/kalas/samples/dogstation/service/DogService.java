@@ -4,6 +4,7 @@ import cz.kalas.samples.dogstation.events.StateChangeEvent;
 import cz.kalas.samples.dogstation.model.entity.Dog;
 import cz.kalas.samples.dogstation.model.entity.DogBreed;
 import cz.kalas.samples.dogstation.model.entity.DogStationState;
+import cz.kalas.samples.dogstation.model.entity.Person;
 import cz.kalas.samples.dogstation.repository.DogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +19,16 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class DogService {
 
-    private final DogRepository baseRepository;
+    private final DogRepository dogRepository;
+
+    private final PersonService personService;
 
     private final ApplicationEventPublisher publisher;
 
@@ -36,11 +40,18 @@ public class DogService {
     private final Lock lock = new ReentrantLock();
 
     public List<Dog> getAllDogs() {
-        return baseRepository.findAll();
+        return dogRepository.fetchAll();
     }
 
     public void deleteAll() {
-        baseRepository.deleteAll();
+
+        var modifiePersons = personService.getAll().stream()
+                .peek(p -> p.setOwnedDogs(null))
+                .collect(Collectors.toList());
+
+        personService.saveAll(modifiePersons);
+
+        dogRepository.deleteAll();
     }
 
     @Async
@@ -73,7 +84,7 @@ public class DogService {
     }
 
     public Dog createRandomDog(String name) {
-        return baseRepository.save(
+        return dogRepository.save(
                 Dog.builder()
                         .name(name)
                         .born(LocalDateTime.now())

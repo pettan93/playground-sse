@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
 
@@ -12,11 +13,20 @@ import org.springframework.web.util.HtmlUtils;
 @Slf4j
 public class WebSocketEndpoint {
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
+    @MessageMapping("/create")
+    @SendTo("/events/get")
     public String greeting(String message) throws Exception {
+        System.out.println("greeting ws endponit call!");
         Thread.sleep(1000); // simulated delay
         return "Hello, " + HtmlUtils.htmlEscape(message) + "!";
+    }
+
+
+
+    @SubscribeMapping("/events/get")
+    public String findAll() {
+        System.out.println("findAll ws endponit call!");
+        return "ahoj;";
     }
 
 }

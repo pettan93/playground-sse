@@ -11,7 +11,7 @@ import java.util.List;
 public interface DogRepository extends JpaRepository<Dog, Integer> {
 
     @Query("SELECT d FROM Dog d" +
-            " JOIN FETCH d.ownedToys t")
+            " LEFT JOIN FETCH d.ownedToys t")
     List<Dog> fetchAll();
 
 

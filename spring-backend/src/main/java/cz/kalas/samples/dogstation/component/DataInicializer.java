@@ -38,9 +38,9 @@ public class DataInicializer {
 
     private List<Toy> toys;
 
-    private static Integer DUMMY_N = 100;
+    private static Integer DUMMY_N = 10;
 
-    private static Integer NUMBER_OF_DOGS_PER_PERSON = 10;
+    private static Integer NUMBER_OF_DOGS_PER_PERSON = 2;
 
     static class RandomNameGenerator {
 

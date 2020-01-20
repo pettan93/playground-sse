@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -27,6 +28,10 @@ public class PersonService {
 
     public Person save(Person person) {
         return personRepository.save(person);
+    }
+
+    public void saveAll(Collection<Person> peoples) {
+        personRepository.saveAll(peoples);
     }
 
     public Optional<Person> getPersonById(Integer id) {

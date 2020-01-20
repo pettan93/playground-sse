@@ -32,7 +32,6 @@ import java.util.List;
 @Slf4j
 public class DogEndpoint {
 
-
     private final DogService dogService;
 
     private List<SseEmitter> sseEmitters = new ArrayList<>();
@@ -139,15 +138,15 @@ public class DogEndpoint {
         return flux.map(StateChangeEvent::getDogStationState);
     }
 
-    @GetMapping(path = "/dog/info/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Integer> streamFluxInterval() {
-        log.debug("Flux subscribed!");
-        return Flux.interval(Duration.ofSeconds(1))
-                .map(l -> {
-                    log.debug("Flux push " + l.intValue());
-                    return l.intValue() + 1;
-                });
-    }
+//    @GetMapping(path = "/dog/info/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+//    public Flux<Integer> streamFluxInterval() {
+//        log.debug("Flux subscribed!");
+//        return Flux.interval(Duration.ofSeconds(1))
+//                .map(l -> {
+//                    log.debug("Flux push " + l.intValue());
+//                    return l.intValue() + 1;
+//                });
+//    }
 
     public DogDto toDto(Dog dog) {
 

@@ -1,13 +1,15 @@
 package cz.kalas.samples.dogstation.events;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.FluxSink;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
@@ -16,12 +18,15 @@ public class StateChangeEventPublisher implements
         ApplicationListener<StateChangeEvent>,
         Consumer<FluxSink<StateChangeEvent>> {
 
-    private final Executor executor;
+    @Autowired
+    @Qualifier("applicationTaskExecutor")
+    private TaskExecutor taskExecutor;
+
     private final BlockingQueue<StateChangeEvent> queue =  new LinkedBlockingQueue<>();
 
-    StateChangeEventPublisher(@Qualifier("applicationTaskExecutor") Executor executor) {
-        this.executor = executor;
-    }
+//    StateChangeEventPublisher(@Qualifier("asyncExecutor") TaskExecutor threadPoolTaskExecutor) {
+//        this.threadPoolTaskExecutor = threadPoolTaskExecutor;
+//    }
 
     @Override
     public void onApplicationEvent(StateChangeEvent event) {
@@ -30,7 +35,7 @@ public class StateChangeEventPublisher implements
 
     @Override
     public void accept(FluxSink<StateChangeEvent> sink) {
-        this.executor.execute(() -> {
+        this.taskExecutor.execute(() -> {
             while (true)
                 try {
                     StateChangeEvent event = queue.take();
