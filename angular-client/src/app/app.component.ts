@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
-import {DogService} from './dog.service';
-import {DogStationState} from './DogStationState';
+import {DogService} from './services/dog.service';
+import {DogStationState} from './models/DogStationState';
 
 @Component({
   selector: 'app-root',
@@ -24,19 +24,19 @@ export class AppComponent implements OnInit {
       }
     );
 
-    this.dogService.dogStationStatus.subscribe((status) => {
-        this.dogStationStatusWorking = (status.valueOf() === DogStationState.WORKING.valueOf());
-      }
-    );
-
-    this.dogService.dogStationSessionUptime.subscribe((uptime) => {
-        this.dogStationSessionUptime = uptime;
-      }
-    );
-
-    this.dogService.subscribeNotification();
-    this.dogService.subscribeStatus();
-    this.dogService.subscribeSessionUptime();
+    // this.dogService.dogStationStatus.subscribe((status) => {
+    //     this.dogStationStatusWorking = (status.valueOf() === DogStationState.WORKING.valueOf());
+    //   }
+    // );
+    //
+    // this.dogService.dogStationSessionUptime.subscribe((uptime) => {
+    //     this.dogStationSessionUptime = uptime;
+    //   }
+    // );
+    //
+    // this.dogService.subscribeNotification();
+    // this.dogService.subscribeStatus();
+    // this.dogService.subscribeSessionUptime();
   }
 
 

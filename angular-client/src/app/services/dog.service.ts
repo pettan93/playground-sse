@@ -3,10 +3,10 @@ import {BehaviorSubject, interval, Observable} from 'rxjs';
 import {delay, startWith, switchMap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material';
-import {Dog} from './Dog';
-import {DogNotification} from './DogNotification';
-import {NotifyType} from './NotifyType';
-import {DogStationState} from './DogStationState';
+import {Dog} from '../models/Dog';
+import {DogNotification} from '../models/DogNotification';
+import {NotifyType} from '../models/NotifyType';
+import {DogStationState} from '../models/DogStationState';
 
 @Injectable({
   providedIn: 'root'
