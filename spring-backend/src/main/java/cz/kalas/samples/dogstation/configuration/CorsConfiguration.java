@@ -1,4 +1,4 @@
-package cz.kalas.samples.dogstation;
+package cz.kalas.samples.dogstation.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +8,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableAsync
 public class AppConfiguration {
 
     @Bean
@@ -23,9 +22,6 @@ public class AppConfiguration {
             }
         };
     }
-
-
-
 
 
 }
