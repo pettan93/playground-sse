@@ -16,16 +16,15 @@ public class WebSocketEndpoint {
     @MessageMapping("/create")
     @SendTo("/events/get")
     public String greeting(String message) throws Exception {
-        System.out.println("greeting ws endponit call!");
+        log.info("greeting ws endponit call!");
         Thread.sleep(1000); // simulated delay
         return "Hello, " + HtmlUtils.htmlEscape(message) + "!";
     }
 
 
-
     @SubscribeMapping("/events/get")
     public String findAll() {
-        System.out.println("findAll ws endponit call!");
+        log.info("findAll ws endponit call!");
         return "ahoj;";
     }
 
