@@ -1,20 +1,17 @@
 package cz.kalas.samples.dogstation.endpoint;
 
-import cz.kalas.samples.dogstation.model.dto.DogDto;
-import cz.kalas.samples.dogstation.model.dto.PersonDto;
-import cz.kalas.samples.dogstation.model.dto.ToyDto;
-import cz.kalas.samples.dogstation.model.entity.Person;
-import cz.kalas.samples.dogstation.model.entity.Toy;
-import cz.kalas.samples.dogstation.service.DogService;
 import cz.kalas.samples.dogstation.events.StateChangeEvent;
 import cz.kalas.samples.dogstation.events.StateChangeEventPublisher;
+import cz.kalas.samples.dogstation.model.dto.DogDto;
+import cz.kalas.samples.dogstation.model.dto.ToyDto;
 import cz.kalas.samples.dogstation.model.entity.Dog;
 import cz.kalas.samples.dogstation.model.entity.DogStationState;
+import cz.kalas.samples.dogstation.model.entity.Toy;
 import cz.kalas.samples.dogstation.model.notifications.Notification;
 import cz.kalas.samples.dogstation.model.notifications.NotifyType;
+import cz.kalas.samples.dogstation.service.DogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -138,15 +135,15 @@ public class DogEndpoint {
         return flux.map(StateChangeEvent::getDogStationState);
     }
 
-//    @GetMapping(path = "/dog/info/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-//    public Flux<Integer> streamFluxInterval() {
-//        log.debug("Flux subscribed!");
-//        return Flux.interval(Duration.ofSeconds(1))
-//                .map(l -> {
-//                    log.debug("Flux push " + l.intValue());
-//                    return l.intValue() + 1;
-//                });
-//    }
+    @GetMapping(path = "/dog/info/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Integer> streamFluxInterval() {
+        log.debug("Flux subscribed!");
+        return Flux.interval(Duration.ofSeconds(1))
+                .map(l -> {
+                    log.debug("Flux push " + l.intValue());
+                    return l.intValue() + 1;
+                });
+    }
 
     public DogDto toDto(Dog dog) {
 
